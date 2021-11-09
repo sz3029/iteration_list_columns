@@ -1,0 +1,80 @@
+---
+title: "iteration_list_columns"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+
+set.seed(1)
+```
+
+## Lists
+
+```{r lists}
+l =
+  list(
+    vec_numeric = 5:8,
+    vec_logical = c(TRUE, FALSE),
+    summary = summary(rnorm(1000, mean = 5, sd = 3))
+  )
+
+l[[3]]
+
+l[["summary"]]
+
+l$summary
+```
+
+## lists of normals
+
+```{r normals}
+list_norms =
+  list(
+    a = rnorm(50, mean = 5, sd = 3),
+    b = rnorm(50, mean = 2, sd = 3),
+    c = rnorm(50, mean = 5, sd = 1.2),
+    d = rnorm(50, mean = 2, sd = 1)
+  )
+list_norms
+```
+
+# functions
+
+```{r}
+mean_and_sd = function(x) {
+  
+  if (!is.numeric(x)) {
+    stop("Argument x should be numeric")
+  } else if (length(x) == 1) {
+    stop("Cannot be computed for length 1 vectors")
+  }
+  
+  mean_x = mean(x)
+  sd_x = sd(x)
+
+  tibble(
+    mean = mean_x, 
+    sd = sd_x
+  )
+}
+
+mean_and_sd(list_norms[[1]])
+```
+
+## for loop
+
+Let's use a for loop to iteration over my list of normals
+
+```{r}
+output = vector("list", length = 4)
+# can add more
+# output[[1]] = mean_and_sd(list_norms[[1]])
+for (i in 1:4) {
+  
+  output[[i]] = mean_and_sd(list_norms[[i]])
+  
+}
+output
+```
+
